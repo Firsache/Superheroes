@@ -1,12 +1,26 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
+// import { useMessage } from "../../hooks/message.hook";
+// import { useHttp } from "../../hooks/http.hook";
 
-import { useMessage } from "../../hooks/message.hook";
+import { useState, useEffect } from "react";
 import { useHttp } from "../../hooks/http.hook";
-import { routes } from "../../helpers/routes";
+import { useMessage } from "../../hooks/message.hook";
 
-export const HeroCreate = () => {
-  const navigate = useNavigate();
+export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
+  const initialState = {
+    nickname: "",
+    real_name: "",
+    origin_description: "",
+    superpowers: "",
+    catch_phrase: "",
+  };
+
+  const [form, setForm] = useState(initialState);
+
+  useEffect(() => {
+    setForm((prevForm) => ({ ...prevForm, ...detailedInfo }));
+  }, [detailedInfo]);
+
   const { loading, request, error, clearError } = useHttp();
   const message = useMessage();
 
@@ -23,7 +37,6 @@ export const HeroCreate = () => {
       const data = await request("/superheroes", "POST", true, formData);
 
       message(data.message);
-      navigate(`/${routes.HEROES}`);
     } catch (error) {}
   };
 

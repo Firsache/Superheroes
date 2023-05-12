@@ -45,10 +45,19 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ message: "Such superhero is not found" });
     }
 
+    hero.images.map(async (image) => {
+      const imgHero = path.join(publicImagesDir, image);
+      try {
+        await fs.unlink(imgHero);
+      } catch (error) {}
+    });
+
+    const heroToDel = await Hero.findByIdAndRemove(req.params.id);
+
     res.status(200).json({
       message: "A superhero is deleted",
       data: {
-        result: hero,
+        result: heroToDel,
       },
     });
   } catch (error) {

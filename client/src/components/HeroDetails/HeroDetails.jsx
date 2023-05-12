@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { ModalHero } from "../ModalHero/ModalHero";
+
 export const HeroInfo = ({ detailedInfo }) => {
   const {
     nickname,
@@ -8,13 +11,30 @@ export const HeroInfo = ({ detailedInfo }) => {
     images,
   } = detailedInfo;
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+
+  const editHandler = () => {
+    toggleModal();
+    toggleEdit();
+  };
+  const deleteHandler = () => {
+    toggleModal();
+  };
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+  const toggleEdit = () => {
+    setEditing(!editing);
+  };
+
   return (
     <>
       <div>
         <>
-          {images.map((image) => (
-            <img src={image} alt={nickname} />
-          ))}
+          {images.map((image) => {
+            return <img alt={nickname} src={image} key={image} />;
+          })}
         </>
         <div>
           <h2>{nickname}</h2>
@@ -28,9 +48,17 @@ export const HeroInfo = ({ detailedInfo }) => {
         </div>
       </div>
       <div>
-        <button>Edit the hero</button>
-        <button>Delete the hero</button>
+        <button onClick={editHandler}>Edit the hero</button>
+        <button onClick={deleteHandler}>Delete the hero</button>
       </div>
+      {modalOpen && (
+        <ModalHero
+          detailedInfo={detailedInfo}
+          toggleModal={toggleModal}
+          editing={editing}
+          toggleEdit={toggleEdit}
+        />
+      )}
     </>
   );
 };

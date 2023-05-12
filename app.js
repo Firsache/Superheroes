@@ -1,6 +1,6 @@
 const express = require("express");
 const config = require("config");
-// const path = require("path");
+const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -8,7 +8,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/superheroes", require("./routes/superheroes.routes"));
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use("/", express.static(path.join(__dirname, "client", "build")));

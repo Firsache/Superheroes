@@ -21,8 +21,7 @@ const HeroDetailsPage = () => {
 
     async function getDetailedInfo() {
       try {
-        const data = await request(`/superheroes/${id}`, "GET", null, null);
-        console.log(data);
+        const { data } = await request(`/superheroes/${id}`, "GET", null, null);
         setDetailedInfo(data.result);
       } catch (error) {}
     }
