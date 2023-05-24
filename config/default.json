@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "mongoUri": "mongodb+srv://firsovalyub:5k3N4iT3buk5YRub@cluster0.1buwbkh.mongodb.net/superheroes?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000"
+}

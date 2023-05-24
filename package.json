@@ -1,0 +1,36 @@
+{
+  "name": "superheroes",
+  "version": "1.0.0",
+  "description": "superheroes app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Firsache/Superheroes.git"
+  },
+  "keywords": [
+    "frontend",
+    "backend",
+    "node",
+    "react"
+  ],
+  "author": "Liubov Firsova <firsova.lyub@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Firsache/Superheroes/issues"
+  },
+  "homepage": "https://github.com/Firsache/Superheroes#readme",
+  "dependencies": {
+    "config": "^3.3.9",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "mongoose": "^7.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "nodemon": "^2.0.22"
+  }
+}
