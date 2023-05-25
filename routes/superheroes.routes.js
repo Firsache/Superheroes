@@ -1,11 +1,75 @@
 const { Router } = require("express");
-const { model } = require("mongoose");
+// const { model } = require("mongoose");
+const router = Router();
 
-const { validation } = require("../middlewares/validation");
+const validation = require("../middlewares/validation");
 const { Hero, joiSchema } = require("../models/Hero");
 
-// const config = require("config");
-const router = Router();
+router.get("/", async (req, res) => {
+  try {
+    const heros = await Hero.find();
+    res.status(200).json({
+      message: "success",
+      data: {
+        result: heros,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const hero = await Hero.findById(req.params.id);
+    res.status(200).json({
+      message: "success",
+      data: {
+        result: hero,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const hero = await Hero.findById(req.params.id);
+    if (!hero) {
+      return res.status(404).json({ message: "Such superhero is not found" });
+    }
+
+    res.status(200).json({
+      message: "A superhero is deleted",
+      data: {
+        result: hero,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.put("/:id", validation(joiSchema), async (req, res) => {
+  try {
+    const response = await Hero.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    if (!response) {
+      return res.status(404).json({ message: "Such superhero is not found" });
+    }
+    res.status(201).json({
+      message: "Updated the superhero",
+      data: {
+        result: response,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 router.post("/newhero", validation(joiSchema), async (req, res) => {
   try {
@@ -27,34 +91,6 @@ router.post("/newhero", validation(joiSchema), async (req, res) => {
       },
     });
   } catch (error) {}
-});
-
-router.get("/", auth, async (req, res) => {
-  try {
-    const heros = await Hero.find();
-    res.status(200).json({
-      message: "success",
-      data: {
-        result: heros,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-router.get("/:id", auth, async (req, res) => {
-  try {
-    const hero = await Hero.findById(req.params.id);
-    res.status(200).json({
-      message: "success",
-      data: {
-        result: hero,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
 });
 
 module.exports = router;

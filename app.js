@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const app = express();
 app.use(express.json({ extended: true }));
 
-app.use("/api/superheroes", require("./routes/superheroes.routes"));
+app.use("/superheroes", require("./routes/superheroes.routes"));
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use("/", express.static(path.join(__dirname, "client", "build")));
