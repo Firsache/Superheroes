@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { routes } from "helpers/routes";
+import { routes } from "./helpers/routes";
 
 import { Layout } from "./components/Layout/Layout";
-import { Loader } from "components";
+import { Loader } from "./components/Loader/Loader";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const HeroesPage = lazy(() => import("./pages/HeroesPage"));

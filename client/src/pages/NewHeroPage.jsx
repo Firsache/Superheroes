@@ -1,5 +1,11 @@
+import { HeroCreate } from "../components/HeroCreate/HeroCreate";
+
 const NewHeroPage = () => {
-  return <></>;
+  return (
+    <>
+      <HeroCreate />
+    </>
+  );
 };
 
 export default NewHeroPage;
