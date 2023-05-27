@@ -71,7 +71,7 @@ router.put("/:id", validation(joiSchema), async (req, res) => {
   }
 });
 
-router.post("/newhero", validation(joiSchema), async (req, res) => {
+router.post("/", validation(joiSchema), async (req, res) => {
   try {
     const { nickname } = req.body;
     const candidate = await Hero.findOne({ nickname });
@@ -81,8 +81,10 @@ router.post("/newhero", validation(joiSchema), async (req, res) => {
         .json({ message: "Such superhero is already in db" });
     }
 
-    const hero = new Hero({ ...req.body });
-    await hero.save();
+    // const hero = new Hero({ ...req.body });
+    // await hero.save();
+
+    const hero = await Hero.create({ ...req.body });
 
     res.status(201).json({
       message: "created a hero",
@@ -90,7 +92,9 @@ router.post("/newhero", validation(joiSchema), async (req, res) => {
         result: hero,
       },
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 module.exports = router;

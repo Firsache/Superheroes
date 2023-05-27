@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { HeroesList } from "../components/HeroesList/HeroesList";
 import { Loader } from "../components/Loader/Loader";
+import { routes } from "../helpers/routes";
 import { useHttp } from "../hooks/http.hook";
 
 const HeroesPage = () => {
@@ -9,12 +11,14 @@ const HeroesPage = () => {
   const [heroes, setHeroes] = useState([]);
 
   useEffect(() => {
+    console.log("enter");
     async function getHeroes() {
+      console.log("start getHeroes func");
       try {
-        const data = await request("/superheroes", "GET", null, null);
-        console.log(data);
-        setHeroes(data.result);
-      } catch (error) {}
+        const res = await request("/superheroes", "GET");
+
+        setHeroes(res.data.result);
+      } catch (e) {}
     }
     getHeroes();
   }, [request]);
@@ -22,7 +26,13 @@ const HeroesPage = () => {
     <>
       {error && <div>Try to reload the page</div>}
       {loading && <Loader />}
-      {Boolean(heroes.length) && <HeroesList array={heroes} />}
+      {heroes !== null && <HeroesList array={heroes} />}
+      {heroes === null && (
+        <div>
+          You haven't added any heroes yet.{" "}
+          <Link to={routes.NEWHERO}>Create a new hero</Link>
+        </div>
+      )}
     </>
   );
 };

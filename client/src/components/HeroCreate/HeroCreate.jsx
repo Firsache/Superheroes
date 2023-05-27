@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMessage } from "../../hooks/message.hook";
-import { useHttp } from "../hooks/http.hook";
+import { useHttp } from "../../hooks/http.hook";
 
 export const HeroCreate = () => {
   const { loading, request, error, clearError } = useHttp();
@@ -15,9 +15,9 @@ export const HeroCreate = () => {
     images: [],
   });
 
-  useEffect(() => {
-    window.M.updateTextFields();
-  }, []);
+  // useEffect(() => {
+  //   window.M.updateTextFields();
+  // }, []);
 
   useEffect(() => {
     message(error);
@@ -29,8 +29,10 @@ export const HeroCreate = () => {
   };
 
   const createHandler = async () => {
+    console.log(form);
     try {
-      const data = await request("/superheroes/newhero", "POST", { ...form });
+      const data = await request("/superheroes", "POST", { ...form });
+      console.log(data);
       message(data.message);
     } catch (error) {}
   };

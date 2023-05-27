@@ -1,14 +1,17 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const heroSchema = new Schema({
-  nickname: { type: String, required: true, unique: true },
-  real_name: { type: String, required: false },
-  origin_description: { type: String, required: true },
-  superpowers: { type: String, required: true },
-  catch_phrase: { type: String, required: false },
-  images: [{ type: String }],
-});
+const heroSchema = new Schema(
+  {
+    nickname: { type: String, required: true, unique: true },
+    real_name: { type: String, required: false },
+    origin_description: { type: String, required: true },
+    superpowers: { type: String, required: true },
+    catch_phrase: { type: String, required: false },
+    images: [{ type: String }],
+  },
+  { versionKey: false, timestamps: true }
+);
 
 const Hero = model("Hero", heroSchema);
 
@@ -18,7 +21,7 @@ const joiSchema = Joi.object({
   origin_description: Joi.string().min(10).required(),
   superpowers: Joi.string().min(10).required(),
   catch_phrase: Joi.string().min(10),
-  images: [Joi.string()],
+  images: Joi.array().items(Joi.string()),
 });
 
 module.exports = { Hero, joiSchema };

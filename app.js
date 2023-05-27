@@ -4,7 +4,7 @@ const config = require("config");
 const mongoose = require("mongoose");
 
 const app = express();
-app.use(express.json({ extended: true }));
+app.use(express.json());
 
 app.use("/superheroes", require("./routes/superheroes.routes"));
 
