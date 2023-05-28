@@ -1,14 +1,14 @@
 const { Router } = require("express");
 const path = require("path");
 const fs = require("fs/promises");
-const Jimp = require("jimp");
+// const Jimp = require("jimp");
 const router = Router();
 
 const validation = require("../middlewares/validation");
 const upload = require("../middlewares/upload");
 
 const { Hero, joiSchema } = require("../models/Hero");
-const publicImagesDir = path.resolve("public", "heros");
+const publicImagesDir = path.resolve("public");
 
 router.get("/", async (req, res) => {
   try {
@@ -83,10 +83,9 @@ router.put(
 
 router.post(
   "/",
-  // validation(joiSchema),
+  validation(joiSchema),
   upload.array("images"),
   async (req, res) => {
-    console.log(req);
     try {
       const { nickname } = req.body;
       const candidate = await Hero.findOne({ nickname });
@@ -100,26 +99,27 @@ router.post(
       console.log(imagesArr);
 
       for (let i = 0; i < imagesArr.length; i++) {
-        const imagesURL = path.join(
-          "images",
-          `${nickname}_${imagesArr[i].originalname}`
-        );
+        const { path: tempUpload, originalname } = imagesArr[i];
+        const imagesURL = path.join(`${nickname}_${originalname}`);
         const resultUpload = path.join(publicImagesDir, imagesURL);
 
-        const img = await Jimp.read(imagesArr[i].path);
-        await img
-          .autocrop()
-          .cover(
-            250,
-            250,
-            Jimp.HORIZONTAL_ALIGN_CENTER || Jimp.VERTICAL_ALIGN_MIDDLE
-          )
-          .writeAsync(imagesArr[i].path);
+        console.log(tempUpload);
+        console.log(resultUpload);
+
+        // const img = await Jimp.read(tempUpload);
+        // await img
+        //   .autocrop()
+        //   .cover(
+        //     250,
+        //     250,
+        //     Jimp.HORIZONTAL_ALIGN_CENTER || Jimp.VERTICAL_ALIGN_MIDDLE
+        //   )
+        //   .writeAsync(tempUpload);
 
         try {
-          await fs.rename(imagesArr[i].path, resultUpload);
+          await fs.rename(tempUpload, resultUpload);
         } catch (error) {
-          await fs.unlink(imagesArr[i].path);
+          await fs.unlink(tempUpload);
           throw error;
         }
         images.push(imagesURL);
