@@ -11,9 +11,7 @@ const HeroesPage = () => {
   const [heroes, setHeroes] = useState([]);
 
   useEffect(() => {
-    console.log("enter");
     async function getHeroes() {
-      console.log("start getHeroes func");
       try {
         const res = await request("/superheroes", "GET");
 

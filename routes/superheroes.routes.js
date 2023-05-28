@@ -81,62 +81,53 @@ router.put(
   }
 );
 
-router.post(
-  "/",
-  validation(joiSchema),
-  upload.array("images"),
-  async (req, res) => {
-    try {
-      const { nickname } = req.body;
-      const candidate = await Hero.findOne({ nickname });
-      if (candidate) {
-        return res
-          .status(400)
-          .json({ message: "Such superhero is already in db" });
-      }
-      const images = [];
-      const imagesArr = req.files;
-      console.log(imagesArr);
-
-      for (let i = 0; i < imagesArr.length; i++) {
-        const { path: tempUpload, originalname } = imagesArr[i];
-        const imagesURL = path.join(`${nickname}_${originalname}`);
-        const resultUpload = path.join(publicImagesDir, imagesURL);
-
-        console.log(tempUpload);
-        console.log(resultUpload);
-
-        // const img = await Jimp.read(tempUpload);
-        // await img
-        //   .autocrop()
-        //   .cover(
-        //     250,
-        //     250,
-        //     Jimp.HORIZONTAL_ALIGN_CENTER || Jimp.VERTICAL_ALIGN_MIDDLE
-        //   )
-        //   .writeAsync(tempUpload);
-
-        try {
-          await fs.rename(tempUpload, resultUpload);
-        } catch (error) {
-          await fs.unlink(tempUpload);
-          throw error;
-        }
-        images.push(imagesURL);
-      }
-
-      const hero = await Hero.create({ ...req.body, images });
-
-      res.status(201).json({
-        message: "created a hero",
-        data: {
-          result: hero,
-        },
-      });
-    } catch (error) {
-      console.log(error.message);
+router.post("/", upload.array("images"), async (req, res) => {
+  validation(joiSchema);
+  try {
+    const { nickname } = req.body;
+    const candidate = await Hero.findOne({ nickname });
+    if (candidate) {
+      return res
+        .status(400)
+        .json({ message: "Such superhero is already in db" });
     }
+    const images = [];
+    const imagesArr = req.files;
+
+    for (let i = 0; i < imagesArr.length; i++) {
+      const { path: tempUpload, originalname } = imagesArr[i];
+      const imagesURL = path.join(`${nickname}_${originalname}`);
+      const resultUpload = path.join(publicImagesDir, imagesURL);
+
+      // const img = await Jimp.read(tempUpload);
+      // await img
+      //   .autocrop()
+      //   .cover(
+      //     250,
+      //     250,
+      //     Jimp.HORIZONTAL_ALIGN_CENTER || Jimp.VERTICAL_ALIGN_MIDDLE
+      //   )
+      //   .writeAsync(tempUpload);
+
+      try {
+        await fs.rename(tempUpload, resultUpload);
+      } catch (error) {
+        await fs.unlink(tempUpload);
+        throw error;
+      }
+      images.push(imagesURL);
+    }
+    const hero = await Hero.create({ ...req.body, images });
+
+    res.status(201).json({
+      message: "created a hero",
+      data: {
+        result: hero,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
   }
-);
+});
 
 module.exports = router;
