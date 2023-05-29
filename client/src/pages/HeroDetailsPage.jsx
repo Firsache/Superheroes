@@ -7,6 +7,7 @@ import { routes } from "../helpers/routes";
 
 import { HeroInfo } from "../components/HeroDetails/HeroDetails";
 import { Loader } from "../components/Loader/Loader";
+import { Container } from "./HomePage.styled";
 
 const HeroDetailsPage = () => {
   const location = useLocation();
@@ -33,12 +34,11 @@ const HeroDetailsPage = () => {
     <>
       {error && <div>Try to reload the page</div>}
       {loading && <Loader />}
-      <div>
+      <Container>
         <BsArrowLeft size={20} />{" "}
         <Link to={location.state?.from ?? routes.HOME}>Go back</Link>
-      </div>
-
-      {detailedInfo && <HeroInfo detailedInfo={detailedInfo} />}
+        {detailedInfo && <HeroInfo detailedInfo={detailedInfo} />}
+      </Container>
     </>
   );
 };

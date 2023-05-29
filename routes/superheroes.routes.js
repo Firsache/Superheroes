@@ -11,12 +11,18 @@ const { Hero, joiSchema } = require("../models/Hero");
 const publicImagesDir = path.resolve("public");
 
 router.get("/", async (req, res) => {
+  const page = req.query.p || 1;
+  const heroesPerPage = 5;
   try {
-    const heros = await Hero.find();
+    const allHeros = await Hero.find();
+    const heros = await Hero.find()
+      .limit(heroesPerPage)
+      .skip((page - 1) * heroesPerPage);
     res.status(200).json({
       message: "success",
       data: {
         result: heros,
+        total: allHeros.length,
       },
     });
   } catch (error) {
@@ -65,30 +71,64 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.put(
-  "/:id",
-  validation(joiSchema),
-  upload.single("images"),
-  async (req, res) => {
-    try {
-      const response = await Hero.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+router.put("/:id", upload.array("images"), async (req, res) => {
+  validation(joiSchema);
 
-      if (!response) {
-        return res.status(404).json({ message: "Such superhero is not found" });
-      }
-      res.status(201).json({
-        message: "Updated the superhero",
-        data: {
-          result: response,
-        },
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
+  try {
+    const hero = await Hero.findById(req.params.id);
+
+    if (!hero) {
+      return res.status(404).json({ message: "Such superhero is not found" });
     }
+
+    const imagesUploaded = [];
+    const imagesArr = req.files;
+
+    for (let i = 0; i < imagesArr.length; i++) {
+      const { path: tempUpload, originalname } = imagesArr[i];
+      const imagesURL = path.join(`${hero.nickname}_${originalname}`);
+      const resultUpload = path.join(publicImagesDir, imagesURL);
+      try {
+        await fs.rename(tempUpload, resultUpload);
+      } catch (error) {
+        await fs.unlink(tempUpload);
+        throw error;
+      }
+      imagesUploaded.push(imagesURL);
+    }
+    const {
+      nickname,
+      real_name,
+      origin_description,
+      superpowers,
+      catch_phrase,
+      old_images,
+    } = req.body;
+    const oldImg = Array.isArray(old_images) ? old_images : [old_images];
+
+    const updatedHero = {
+      nickname,
+      real_name,
+      origin_description,
+      superpowers,
+      catch_phrase,
+      images: [...oldImg, ...imagesUploaded],
+    };
+
+    const response = await Hero.findByIdAndUpdate(req.params.id, updatedHero, {
+      new: true,
+    });
+
+    res.status(201).json({
+      message: "Updated the superhero",
+      data: {
+        result: response,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
-);
+});
 
 router.post("/", upload.array("images"), async (req, res) => {
   validation(joiSchema);

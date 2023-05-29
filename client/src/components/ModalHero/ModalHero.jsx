@@ -15,7 +15,9 @@ export const ModalHero = ({
   detailedInfo,
   toggleModal,
   editing,
-  toggleEdit,
+  setEdit,
+  deleting,
+  setDelete,
 }) => {
   const navigate = useNavigate();
   const { request } = useHttp();
@@ -25,23 +27,29 @@ export const ModalHero = ({
     function handleEscapeClick(e) {
       if (e.code === "Escape") {
         toggleModal();
+        setEdit(false);
+        setDelete(false);
       }
     }
     window.addEventListener("keydown", handleEscapeClick);
     return () => {
       window.removeEventListener("keydown", handleEscapeClick);
     };
-  }, [toggleModal]);
+  }, [setDelete, setEdit, toggleModal]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       toggleModal();
+      setEdit(false);
+      setDelete(false);
     }
   };
 
   const handleEscapeClick = (e) => {
     if (e.code === "Escape") {
       toggleModal();
+      setEdit(false);
+      setDelete(false);
     }
   };
   const deleteHero = () => {
@@ -53,6 +61,7 @@ export const ModalHero = ({
         );
         message(data.message);
         toggleModal();
+        setDelete(false);
         navigate(`/${routes.HEROES}`);
       } catch (e) {}
     }
@@ -62,8 +71,7 @@ export const ModalHero = ({
   return createPortal(
     <Backdrop onClick={handleBackdropClick}>
       <Modal onKeyDown={handleEscapeClick}>
-        <div>Modal is here</div>
-        {!editing && (
+        {deleting && (
           <>
             <div>
               You are going to delete the superhero{" "}
@@ -73,15 +81,20 @@ export const ModalHero = ({
               <button className="submit" onClick={deleteHero}>
                 Submit
               </button>
-              <button className="cancel" onClick={() => toggleModal()}>
+              <button
+                className="cancel"
+                onClick={() => {
+                  toggleModal();
+                  setEdit(false);
+                  setDelete(false);
+                }}
+              >
                 Cancel
               </button>
             </ModalButtons>
           </>
         )}
-        {editing && (
-          <HeroEdit detailedInfo={detailedInfo} toggleEdit={toggleEdit} />
-        )}
+        {editing && <HeroEdit detailedInfo={detailedInfo} setEdit={setEdit} />}
 
         <CloseBtn onClick={() => toggleModal()}>
           <BsX size={25} />

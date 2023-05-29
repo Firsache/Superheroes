@@ -1,19 +1,20 @@
 import { Outlet } from "react-router-dom";
 import { Link, NavLink } from "react-router-dom";
 import { routes } from "../../helpers/routes";
+import { HeaderBlock, Navigation } from "./Layout.styled";
 
 export const Layout = () => {
   //   const isDesktop = useMediaQuery({ maxWidth: 767 });
 
   return (
     <>
-      <header>
+      <HeaderBlock>
         <Link to={routes.HOME}>Superheroes App</Link>
-        <nav>
+        <Navigation>
           <NavLink to={routes.NEWHERO}>A new hero</NavLink>
           <NavLink to={routes.HEROES}>Heroes</NavLink>
-        </nav>
-      </header>
+        </Navigation>
+      </HeaderBlock>
       <Outlet />
     </>
   );

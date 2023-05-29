@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMessage } from "../../hooks/message.hook";
 import { useHttp } from "../../hooks/http.hook";
 import { routes } from "../../helpers/routes";
+import { Form } from "./HeroCreate.styled";
+import { Button } from "../HeroDetails/HeroDetails.styled";
 
 export const HeroCreate = () => {
   const navigate = useNavigate();
@@ -29,54 +31,55 @@ export const HeroCreate = () => {
 
   return (
     <>
-      <form onSubmit={createHandler} encType="multipart/form-data">
+      <Form onSubmit={createHandler} encType="multipart/form-data">
         <h1>Create a superhero</h1>
         <div>
           <div className="input-field">
+            <label htmlFor="nickname">Nickname</label>
             <input
               id="nickname"
               placeholder="Enter the nickname"
               type="text"
               name="nickname"
             />
-            <label htmlFor="nickname">Nickname</label>
           </div>
           <div className="input-field">
+            <label htmlFor="real_name">Real name</label>
             <input
               id="real_name"
               placeholder="Enter the real name"
               type="text"
               name="real_name"
             />
-            <label htmlFor="real_name">Real name</label>
           </div>
           <div className="input-field col s12">
+            <label htmlFor="origin_description">Description</label>
             <textarea
               id="origin_description"
               placeholder="Enter the description"
               name="origin_description"
             />
-            <label htmlFor="origin_description">Description</label>
           </div>
           <div className="input-field">
+            <label htmlFor="superpowers">Superpowers</label>
             <input
               id="superpowers"
               placeholder="Enter the superpowers"
               type="text"
               name="superpowers"
             />
-            <label htmlFor="superpowers">Superpowers</label>
           </div>
           <div className="input-field">
+            <label htmlFor="catch_phrase">Catch phrase</label>
             <input
               id="catch_phrase"
               placeholder="Enter the catch phrase"
               type="text"
               name="catch_phrase"
             />
-            <label htmlFor="catch_phrase">Catch phrase</label>
           </div>
           <div className="input-field">
+            <label htmlFor="images">Upload one or more images</label>
             <input
               id="images"
               type="file"
@@ -84,13 +87,12 @@ export const HeroCreate = () => {
               multiple
               accept="image/*,.png,.jpg,.gif,.web"
             />
-            <label htmlFor="images">Upload one or more images</label>
           </div>
         </div>
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           Create
-        </button>
-      </form>
+        </Button>
+      </Form>
     </>
   );
 };

@@ -1,49 +1,66 @@
-// import { useEffect } from "react";
-// import { useMessage } from "../../hooks/message.hook";
-// import { useHttp } from "../../hooks/http.hook";
-
 import { useState, useEffect } from "react";
 import { useHttp } from "../../hooks/http.hook";
 import { useMessage } from "../../hooks/message.hook";
 
-export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
+export const HeroEdit = ({ detailedInfo, setEdit }) => {
+  const { loading, error, request, clearError } = useHttp();
+  const message = useMessage();
+
   const initialState = {
-    nickname: "",
-    real_name: "",
-    origin_description: "",
-    superpowers: "",
-    catch_phrase: "",
+    nickname: detailedInfo.nickname || "",
+    real_name: detailedInfo.real_name || "",
+    origin_description: detailedInfo.origin_description || "",
+    superpowers: detailedInfo.superpowers || "",
+    catch_phrase: detailedInfo.catch_phrase || "",
   };
 
   const [form, setForm] = useState(initialState);
-
-  useEffect(() => {
-    setForm((prevForm) => ({ ...prevForm, ...detailedInfo }));
-  }, [detailedInfo]);
-
-  const { loading, request, error, clearError } = useHttp();
-  const message = useMessage();
+  const [files, setFiles] = useState([]);
+  const [imageData, setImageData] = useState(detailedInfo.images || []);
 
   useEffect(() => {
     message(error);
     clearError();
   }, [error, message, clearError]);
 
+  const changeHandler = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const changeImagesHandler = (e) => {
+    setFiles([e.target.files]);
+  };
+  const deleteImageHandler = (image) => {
+    const newArr = imageData.filter((el) => el !== image);
+    setImageData(newArr);
+  };
   const createHandler = async (e) => {
     e.preventDefault();
 
     try {
       const formData = new FormData(e.currentTarget);
-      const data = await request("/superheroes", "POST", true, formData);
+      for (const image of imageData) {
+        formData.append("old_images", image);
+      }
+      for (const file of files) {
+        formData.append("images", file);
+      }
+
+      const data = await request(
+        `/superheroes/${detailedInfo._id}`,
+        "PUT",
+        true,
+        formData
+      );
 
       message(data.message);
+      setEdit(false);
     } catch (error) {}
   };
 
   return (
     <>
       <form onSubmit={createHandler} encType="multipart/form-data">
-        <h1>Create a superhero</h1>
+        <h1>Edit the superhero</h1>
         <div>
           <div className="input-field">
             <input
@@ -51,6 +68,8 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               placeholder="Enter the nickname"
               type="text"
               name="nickname"
+              value={form.nickname}
+              onChange={changeHandler}
             />
             <label htmlFor="nickname">Nickname</label>
           </div>
@@ -60,6 +79,8 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               placeholder="Enter the real name"
               type="text"
               name="real_name"
+              value={form.real_name}
+              onChange={changeHandler}
             />
             <label htmlFor="real_name">Real name</label>
           </div>
@@ -68,6 +89,8 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               id="origin_description"
               placeholder="Enter the description"
               name="origin_description"
+              value={form.origin_description}
+              onChange={changeHandler}
             />
             <label htmlFor="origin_description">Description</label>
           </div>
@@ -77,6 +100,8 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               placeholder="Enter the superpowers"
               type="text"
               name="superpowers"
+              value={form.superpowers}
+              onChange={changeHandler}
             />
             <label htmlFor="superpowers">Superpowers</label>
           </div>
@@ -86,9 +111,28 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               placeholder="Enter the catch phrase"
               type="text"
               name="catch_phrase"
+              value={form.catch_phrase}
+              onChange={changeHandler}
             />
             <label htmlFor="catch_phrase">Catch phrase</label>
           </div>
+          {imageData && (
+            <ul>
+              {imageData.map((image) => {
+                return (
+                  <li key={image}>
+                    <img alt={form.nickname} src={image} height={50} />
+                    <button
+                      type="button"
+                      onClick={() => deleteImageHandler(image)}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
           <div className="input-field">
             <input
               id="images"
@@ -96,8 +140,9 @@ export const HeroEdit = ({ detailedInfo, toggleEdit }) => {
               name="images"
               multiple
               accept="image/*,.png,.jpg,.gif,.web"
+              onChange={changeImagesHandler}
             />
-            <label htmlFor="images">Upload one or more images</label>
+            <label htmlFor="images">Upload new images</label>
           </div>
         </div>
         <button type="submit" disabled={loading}>

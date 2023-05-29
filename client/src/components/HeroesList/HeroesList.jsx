@@ -1,21 +1,25 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { routes } from "../../helpers/routes";
+import { List, ListItem, StyledLink } from "./HeroesList.styled";
 
 export const HeroesList = ({ array }) => {
   const location = useLocation();
 
   return (
-    <ul>
+    <List>
       {array?.map(({ _id, nickname, images }) => {
         return (
-          <li key={_id}>
-            <Link state={{ from: location }} to={routes.HERO_DETAILS_PATH(_id)}>
-              <img alt={nickname} src={images[0]} height={150} />
+          <ListItem key={_id}>
+            <StyledLink
+              state={{ from: location }}
+              to={routes.HERO_DETAILS_PATH(_id)}
+            >
+              <img alt={nickname} src={images[0]} />
               <h3>{nickname}</h3>
-            </Link>
-          </li>
+            </StyledLink>
+          </ListItem>
         );
       })}
-    </ul>
+    </List>
   );
 };
