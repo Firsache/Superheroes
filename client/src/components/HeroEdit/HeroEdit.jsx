@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import { Form, Wrapper } from "./HeroEdit.styled";
 import { useHttp } from "../../hooks/http.hook";
 import { useMessage } from "../../hooks/message.hook";
+import { Button } from "../HeroDetails/HeroDetails.styled";
+import defaulthero from "../../img/hero.png";
 
 export const HeroEdit = ({ detailedInfo, setEdit }) => {
   const { loading, error, request, clearError } = useHttp();
@@ -59,10 +62,11 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
 
   return (
     <>
-      <form onSubmit={createHandler} encType="multipart/form-data">
+      <Form onSubmit={createHandler} encType="multipart/form-data">
         <h1>Edit the superhero</h1>
         <div>
           <div className="input-field">
+            <label htmlFor="nickname">Nickname</label>
             <input
               id="nickname"
               placeholder="Enter the nickname"
@@ -71,9 +75,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               value={form.nickname}
               onChange={changeHandler}
             />
-            <label htmlFor="nickname">Nickname</label>
           </div>
           <div className="input-field">
+            <label htmlFor="real_name">Real name</label>
             <input
               id="real_name"
               placeholder="Enter the real name"
@@ -82,9 +86,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               value={form.real_name}
               onChange={changeHandler}
             />
-            <label htmlFor="real_name">Real name</label>
           </div>
           <div className="input-field col s12">
+            <label htmlFor="origin_description">Description</label>
             <textarea
               id="origin_description"
               placeholder="Enter the description"
@@ -92,9 +96,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               value={form.origin_description}
               onChange={changeHandler}
             />
-            <label htmlFor="origin_description">Description</label>
           </div>
           <div className="input-field">
+            <label htmlFor="superpowers">Superpowers</label>
             <input
               id="superpowers"
               placeholder="Enter the superpowers"
@@ -103,9 +107,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               value={form.superpowers}
               onChange={changeHandler}
             />
-            <label htmlFor="superpowers">Superpowers</label>
           </div>
           <div className="input-field">
+            <label htmlFor="catch_phrase">Catch phrase</label>
             <input
               id="catch_phrase"
               placeholder="Enter the catch phrase"
@@ -114,14 +118,14 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               value={form.catch_phrase}
               onChange={changeHandler}
             />
-            <label htmlFor="catch_phrase">Catch phrase</label>
           </div>
           {imageData && (
-            <ul>
+            <Wrapper>
               {imageData.map((image) => {
+                const imgSrc = image || defaulthero;
                 return (
                   <li key={image}>
-                    <img alt={form.nickname} src={image} height={50} />
+                    <img alt={form.nickname} src={imgSrc} height={50} />
                     <button
                       type="button"
                       onClick={() => deleteImageHandler(image)}
@@ -131,9 +135,10 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
                   </li>
                 );
               })}
-            </ul>
+            </Wrapper>
           )}
           <div className="input-field">
+            <label htmlFor="images">Upload new images</label>
             <input
               id="images"
               type="file"
@@ -142,13 +147,12 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
               accept="image/*,.png,.jpg,.gif,.web"
               onChange={changeImagesHandler}
             />
-            <label htmlFor="images">Upload new images</label>
           </div>
         </div>
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           Create
-        </button>
-      </form>
+        </Button>
+      </Form>
     </>
   );
 };

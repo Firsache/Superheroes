@@ -15,12 +15,12 @@ export const Backdrop = styled.div`
 
 export const Modal = styled.div`
   position: absolute;
-  top: 30%;
+  top: 50%;
   left: 50%;
-  max-width: 350px;
+  max-width: 650px;
   width: 100%;
   min-height: 150px;
-  padding: 40px;
+  padding: 10px;
 
   background-color: white;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
@@ -44,6 +44,22 @@ export const CloseBtn = styled.button`
   color: inherit;
   background-color: transparent;
 `;
+export const Wrapper = styled.div`
+  padding: 8px 0;
+  width: 100%;
+  height: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    font-size: 18px;
+    span {
+      font-size: 20px;
+    }
+  }
+`;
 
 export const ModalButtons = styled.div`
   display: flex;
@@ -51,7 +67,7 @@ export const ModalButtons = styled.div`
   align-items: center;
   gap: 30px;
 
-  margin-top: 30px;
+  /* margin-top: 30px; */
 
   button {
     padding: 5px 14px;
@@ -59,6 +75,8 @@ export const ModalButtons = styled.div`
     border-radius: 2px;
 
     transition: transform ease-in-out;
+
+    font-size: 16px;
 
     :hover {
       transform: scale(1.1);

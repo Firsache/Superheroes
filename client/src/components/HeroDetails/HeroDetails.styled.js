@@ -1,5 +1,23 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.ul`
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  li {
+    width: 250px;
+    border: 1px solid blue;
+    border-radius: 15px;
+  }
+
+  img {
+    height: 350px;
+  }
+`;
+
 export const Info = styled.div`
   padding-top: 20px;
   display: flex;

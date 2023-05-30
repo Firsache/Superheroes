@@ -5,7 +5,13 @@ import { createPortal } from "react-dom";
 import { BsX } from "react-icons/bs";
 import { useHttp } from "../../hooks/http.hook";
 import { useMessage } from "../../hooks/message.hook";
-import { Backdrop, CloseBtn, Modal, ModalButtons } from "./ModalHero.styled";
+import {
+  Backdrop,
+  CloseBtn,
+  Modal,
+  ModalButtons,
+  Wrapper,
+} from "./ModalHero.styled";
 import { routes } from "../../helpers/routes";
 import { HeroEdit } from "../HeroEdit/HeroEdit";
 
@@ -72,8 +78,8 @@ export const ModalHero = ({
     <Backdrop onClick={handleBackdropClick}>
       <Modal onKeyDown={handleEscapeClick}>
         {deleting && (
-          <>
-            <div>
+          <Wrapper>
+            <div className="title">
               You are going to delete the superhero{" "}
               <span>{detailedInfo.nickname}...</span>
             </div>
@@ -92,7 +98,7 @@ export const ModalHero = ({
                 Cancel
               </button>
             </ModalButtons>
-          </>
+          </Wrapper>
         )}
         {editing && <HeroEdit detailedInfo={detailedInfo} setEdit={setEdit} />}
 

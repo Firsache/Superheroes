@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ModalHero } from "../ModalHero/ModalHero";
-import { Button, ButtonsBlock, Info } from "./HeroDetails.styled";
+import { Button, ButtonsBlock, Info, Wrapper } from "./HeroDetails.styled";
+import defaulthero from "../../img/hero.png";
 
 export const HeroInfo = ({ detailedInfo }) => {
   const {
@@ -37,15 +38,16 @@ export const HeroInfo = ({ detailedInfo }) => {
   return (
     <>
       <>
-        <ul>
+        <Wrapper>
           {images.map((image) => {
+            const imgSrc = images || defaulthero;
             return (
               <li key={image}>
-                <img alt={nickname} src={image} height={150} />
+                <img alt={nickname} src={imgSrc} height={150} />
               </li>
             );
           })}
-        </ul>
+        </Wrapper>
         <Info>
           <h2>{nickname}</h2>
           <p>Real name: {real_name}</p>

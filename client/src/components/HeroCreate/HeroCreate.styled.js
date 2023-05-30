@@ -1,26 +1,4 @@
 import styled from "styled-components";
-// export const Wrapper = styled.div`
-//   padding: 10px 30px;
-//   width: 100%;
-
-//   h3 {
-//     text-align: center;
-//     margin-bottom: 10px;
-
-//     font-size: 14px;
-//     color: #9f9c9c;
-
-//     @media screen and (min-width: 860px) {
-//       font-size: 16px;
-//     }
-//   }
-// `;
-
-// export const Message = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 20px;
-// `;
 
 export const Form = styled.form`
   display: flex;
@@ -30,6 +8,7 @@ export const Form = styled.form`
 
   input {
     border: none;
+    width: 400px;
     padding: 10px 10px 20px 10px;
 
     font-size: 16px;
@@ -47,7 +26,7 @@ export const Form = styled.form`
   textarea {
     border: none;
     font-size: 14px;
-    width: 260px;
+    width: 400px;
     padding: 10px 10px 20px 10px;
     padding-bottom: 20px;
 
@@ -65,7 +44,7 @@ export const Form = styled.form`
     justify-content: space-between;
     align-items: center;
 
-    width: 600px;
+    width: 750px;
     margin-bottom: 15px;
   }
 `;
