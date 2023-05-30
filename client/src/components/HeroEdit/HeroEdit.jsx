@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Form, Wrapper } from "./HeroEdit.styled";
 import { useHttp } from "../../hooks/http.hook";
 import { useMessage } from "../../hooks/message.hook";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../HeroDetails/HeroDetails.styled";
 import defaulthero from "../../img/hero.png";
+import { routes } from "../../helpers/routes";
 
 export const HeroEdit = ({ detailedInfo, setEdit }) => {
   const { loading, error, request, clearError } = useHttp();
@@ -16,6 +18,7 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
     superpowers: detailedInfo.superpowers || "",
     catch_phrase: detailedInfo.catch_phrase || "",
   };
+  const navigate = useNavigate();
 
   const [form, setForm] = useState(initialState);
   const [files, setFiles] = useState([]);
@@ -57,6 +60,7 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
 
       message(data.message);
       setEdit(false);
+      navigate(`/${routes.HEROES}`);
     } catch (error) {}
   };
 
