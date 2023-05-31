@@ -9,6 +9,7 @@ const heroSchema = new Schema(
     superpowers: { type: String, required: true },
     catch_phrase: { type: String, required: false },
     images: [{ type: String }],
+    old_images: { any: Schema.Types.Mixed },
   },
   { versionKey: false, timestamps: true }
 );
@@ -21,6 +22,8 @@ const joiSchema = Joi.object({
   origin_description: Joi.string().min(10).required(),
   superpowers: Joi.string().min(10).required(),
   catch_phrase: Joi.string().min(10),
+  old_images: Joi.any(),
+  images: Joi.any(),
 });
 
 module.exports = { Hero, joiSchema };

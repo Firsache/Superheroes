@@ -60,8 +60,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
         formData
       );
 
-      toast.success(data.message, {
+      toast.info(data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
+        theme: "dark",
       });
       setEdit(false);
     } catch (error) {

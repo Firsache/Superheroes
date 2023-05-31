@@ -14,6 +14,7 @@ export const HeroCreate = () => {
   useEffect(() => {
     toast.error(error, {
       position: toast.POSITION.BOTTOM_RIGHT,
+      theme: "dark",
     });
     clearError();
   }, [error, clearError]);
@@ -25,8 +26,9 @@ export const HeroCreate = () => {
       const formData = new FormData(e.currentTarget);
       const data = await request("/superheroes", "POST", true, formData);
 
-      toast.success(data.message, {
+      toast.info(data.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
+        theme: "dark",
       });
     } catch (error) {
     } finally {

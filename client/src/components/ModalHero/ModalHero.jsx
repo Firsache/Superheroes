@@ -71,8 +71,9 @@ export const ModalHero = ({
           `/superheroes/${detailedInfo._id}`,
           "DELETE"
         );
-        toast.success(data.message, {
+        toast.info(data.message, {
           position: toast.POSITION.BOTTOM_RIGHT,
+          theme: "dark",
         });
         toggleModal();
         setDelete(false);
