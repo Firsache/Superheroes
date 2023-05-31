@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
+import { toast } from "react-toastify";
 
 import { BsX } from "react-icons/bs";
 import { useHttp } from "../../hooks/http.hook";
-import { useMessage } from "../../hooks/message.hook";
 import {
   Backdrop,
   CloseBtn,
@@ -26,8 +26,14 @@ export const ModalHero = ({
   setDelete,
 }) => {
   const navigate = useNavigate();
-  const { request } = useHttp();
-  const message = useMessage();
+  const { request, error, clearError } = useHttp();
+
+  useEffect(() => {
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    clearError();
+  }, [error, clearError]);
 
   useEffect(() => {
     function handleEscapeClick(e) {
@@ -61,11 +67,13 @@ export const ModalHero = ({
   const deleteHero = () => {
     async function deleteHero() {
       try {
-        const { data } = await request(
+        const data = await request(
           `/superheroes/${detailedInfo._id}`,
           "DELETE"
         );
-        message(data.message);
+        toast.success(data.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
         toggleModal();
         setDelete(false);
         navigate(`/${routes.HEROES}`);

@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { routes } from "../helpers/routes";
+import { useHttp } from "../hooks/http.hook";
 
 import { HeroesList } from "../components/HeroesList/HeroesList";
 import { Loader } from "../components/Loader/Loader";
 import { Pagination } from "../components/Pagination/Pagination";
-import { routes } from "../helpers/routes";
-import { useHttp } from "../hooks/http.hook";
+
 import { Container } from "./HomePage.styled";
 
 const HeroesPage = () => {
-  const { request, loading, error } = useHttp();
+  const { request, loading, error, clearError } = useHttp();
   const [heroes, setHeroes] = useState([]);
   const [totalHeroes, setTotalHeroes] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +20,13 @@ const HeroesPage = () => {
   // const lastHeroIdx = currentPage * herosPerPage;
   // const firstHeroIdx = lastHeroIdx - currentPage;
   // const currentHero = heroes.slice(firstHeroIdx, lastHeroIdx);
+
+  useEffect(() => {
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+    clearError();
+  }, [error, clearError]);
 
   useEffect(() => {
     async function getHeroes() {
@@ -36,7 +46,6 @@ const HeroesPage = () => {
   return (
     <>
       {error && <div>Try to reload the page</div>}
-      {loading && <Loader />}
       {heroes !== null && (
         <Container>
           <HeroesList array={heroes} />
@@ -53,6 +62,7 @@ const HeroesPage = () => {
           <Link to={routes.NEWHERO}>Create a new hero</Link>
         </div>
       )}
+      {loading && <Loader />}
     </>
   );
 };

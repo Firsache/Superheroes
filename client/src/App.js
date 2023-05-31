@@ -1,3 +1,4 @@
+import "react-toastify/dist/ReactToastify.css";
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { routes } from "./helpers/routes";

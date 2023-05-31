@@ -1,21 +1,22 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { useMessage } from "../../hooks/message.hook";
 import { useHttp } from "../../hooks/http.hook";
 import { routes } from "../../helpers/routes";
 import { Form } from "./HeroCreate.styled";
 import { Button } from "../HeroDetails/HeroDetails.styled";
+import { useEffect } from "react";
 
 export const HeroCreate = () => {
   const navigate = useNavigate();
   const { loading, request, error, clearError } = useHttp();
-  const message = useMessage();
 
   useEffect(() => {
-    message(error);
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     clearError();
-  }, [error, message, clearError]);
+  }, [error, clearError]);
 
   const createHandler = async (e) => {
     e.preventDefault();
@@ -24,7 +25,9 @@ export const HeroCreate = () => {
       const formData = new FormData(e.currentTarget);
       const data = await request("/superheroes", "POST", true, formData);
 
-      message(data.message);
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } catch (error) {
     } finally {
       navigate(`/${routes.HEROES}`);

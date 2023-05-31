@@ -1,9 +1,7 @@
 const { Router } = require("express");
-const path = require("path");
 const router = Router();
 
 const { heros: ctrl } = require("../controllers");
-
 const upload = require("../middlewares/upload");
 
 router.get("/", ctrl.getAll);

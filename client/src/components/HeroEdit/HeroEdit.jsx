@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
 import { Form, Wrapper } from "./HeroEdit.styled";
 import { useHttp } from "../../hooks/http.hook";
-import { useMessage } from "../../hooks/message.hook";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../HeroDetails/HeroDetails.styled";
 import defaulthero from "../../img/hero.png";
@@ -9,7 +10,6 @@ import { routes } from "../../helpers/routes";
 
 export const HeroEdit = ({ detailedInfo, setEdit }) => {
   const { loading, error, request, clearError } = useHttp();
-  const message = useMessage();
 
   const initialState = {
     nickname: detailedInfo.nickname || "",
@@ -25,9 +25,11 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
   const [imageData, setImageData] = useState(detailedInfo.images || []);
 
   useEffect(() => {
-    message(error);
+    toast.error(error, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     clearError();
-  }, [error, message, clearError]);
+  }, [error, clearError]);
 
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -58,7 +60,9 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
         formData
       );
 
-      message(data.message);
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       setEdit(false);
     } catch (error) {
     } finally {

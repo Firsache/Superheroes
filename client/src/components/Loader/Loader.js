@@ -1,20 +1,14 @@
+import { FallingLines } from "react-loader-spinner";
+
 export const Loader = () => {
   return (
-    <div
-      className="preloader-wrapper small active"
-      style={{ display: "flex", justifyContent: "center", paddingTop: "2rem" }}
-    >
-      <div className="spinner-layer spinner-green-only">
-        <div className="circle-clipper left">
-          <div className="circle" />
-        </div>
-        <div className="gap-patch">
-          <div className="circle" />
-        </div>
-        <div className="circle-clipper right">
-          <div className="circle" />
-        </div>
-      </div>
+    <div style={{ position: "absolute", top: "50%", left: "50%" }}>
+      <FallingLines
+        color={"blue"}
+        width="100"
+        visible={true}
+        ariaLabel="falling-lines-loading"
+      />
     </div>
   );
 };

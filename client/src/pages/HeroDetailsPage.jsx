@@ -33,12 +33,12 @@ const HeroDetailsPage = () => {
   return (
     <>
       {error && <div>Try to reload the page</div>}
-      {loading && <Loader />}
       <Container>
         <BsArrowLeft size={20} />{" "}
         <Link to={location.state?.from ?? routes.HOME}>Go back</Link>
         {detailedInfo && <HeroInfo detailedInfo={detailedInfo} />}
       </Container>
+      {loading && <Loader />}
     </>
   );
 };
