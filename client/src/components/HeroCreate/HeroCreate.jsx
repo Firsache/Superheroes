@@ -25,8 +25,10 @@ export const HeroCreate = () => {
       const data = await request("/superheroes", "POST", true, formData);
 
       message(data.message);
+    } catch (error) {
+    } finally {
       navigate(`/${routes.HEROES}`);
-    } catch (error) {}
+    }
   };
 
   return (

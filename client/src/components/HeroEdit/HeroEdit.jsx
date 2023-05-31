@@ -60,8 +60,10 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
 
       message(data.message);
       setEdit(false);
+    } catch (error) {
+    } finally {
       navigate(`/${routes.HEROES}`);
-    } catch (error) {}
+    }
   };
 
   return (
