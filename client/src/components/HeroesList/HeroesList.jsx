@@ -10,6 +10,7 @@ export const HeroesList = ({ array }) => {
     <List>
       {array?.map(({ _id, nickname, images }) => {
         const imgSrc = images[0] || defaulthero;
+        console.log("HeroesList static image:", imgSrc);
         return (
           <ListItem key={_id}>
             <StyledLink

@@ -40,10 +40,11 @@ export const HeroInfo = ({ detailedInfo }) => {
       <>
         <Wrapper>
           {images.map((image) => {
-            const imgSrc = images || defaulthero;
+            const imgSrc = image || defaulthero;
+            console.log("HeroInfo static image:", imgSrc);
             return (
               <li key={image}>
-                <img alt={nickname} src={imgSrc} height={150} />
+                <img alt={nickname} src={imgSrc} />
               </li>
             );
           })}

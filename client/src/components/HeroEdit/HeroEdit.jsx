@@ -134,9 +134,10 @@ export const HeroEdit = ({ detailedInfo, setEdit }) => {
             <Wrapper>
               {imageData.map((image) => {
                 const imgSrc = image || defaulthero;
+                console.log("HeroEdit static image:", imgSrc);
                 return (
                   <li key={image}>
-                    <img alt={form.nickname} src={imgSrc} height={50} />
+                    <img alt={form.nickname} src={imgSrc} />
                     <button
                       type="button"
                       onClick={() => deleteImageHandler(image)}

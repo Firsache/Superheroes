@@ -2,15 +2,12 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const { Hero } = require("../../models/Hero");
-// const { Hero, joiSchema } = require("../../models/Hero");
-// const validation = require("../../middlewares/validation");
 const deleteImages = require("../../helpers/deleteImages");
+
 const { renameImage } = require("../../helpers/renameImage");
 const publicImagesDir = path.resolve("public");
 
 const updateHeroById = async (req, res) => {
-  // validation(joiSchema);
-
   try {
     const hero = await Hero.findById(req.params.id);
 

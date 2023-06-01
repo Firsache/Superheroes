@@ -3,12 +3,9 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const { Hero } = require("../../models/Hero");
-// const { Hero, joiSchema } = require("../../models/Hero");
-// const validation = require("../../middlewares/validation");
 const publicImagesDir = path.resolve("public");
 
 const addHero = async (req, res) => {
-  // validation(joiSchema);
   try {
     const { nickname } = req.body;
     const images = [];
